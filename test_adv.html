@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        *{
+          box-sizing: border-box;
+        }
+
+        .column {
+          float: left;
+          width: 550px;
+          padding:5px;
+          text-align: center;
+        }
+        
+        /* Clearfix (clear floats) */
+        .row::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+
+        .button {
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+    </style>
+        <!-- <style>
+            h1 {text-align: center;}
+            p {text-align: center;}
+            div {text-align: center;}
+        </style> -->
+</head>
+
+<body>
+
+<h1>Which one looks better?</h1>
+<p>How to create side-by-side images with the CSS float property:</p>
+<!-- <p id="debug_rand"></p> -->
+<form action ="https://docs.google.com/forms/u/0/d/e/1FAIpQLScH1AhmmUdWxGwS4YV7v9ccrnwnUQ98nteupQHcX0jsA9gauw/formResponse" method="post">
+<div class="row">
+<label>Name*&nbsp;&nbsp;</label> <input type="text" placeholder="please enter your name" name="entry.1563324860" required>
+</div>
+<hr>
+
+<div id="image_pair_blk"></div>
+
+<!-- <p>Default range slider:</p>
+  <input type="range" min="1" max="100" value="50" name="entry.320166337"> -->
+
+<br>
+<div><button class="button" type="submit">Submit your results </button></div>
+</form>
+
+<script>
+    var Obj1 = {
+            "image":["kodim04.png", "kodim09.png", "kodim10.png"],
+            "radio":["entry.210672296", "entry.1317665443", "entry.1623471387"],
+            "option":1,
+            "prefix":"http://www.cs.albany.edu/~xypan/research/img/Kodak/"
+        };
+    var Obj2 = {
+            "image":["kodim17.png", "kodim18.png", "kodim19.png"],
+            "radio":["entry.210672296", "entry.1317665443", "entry.1623471387"],
+            "option":2,
+            "prefix":"http://www.cs.albany.edu/~xypan/research/img/Kodak/"
+        };
+    var L_Obj, R_Obj
+    var text = "";
+    var i;
+
+    /// Randomly swap left/right image
+    var rand_flag = (Math.random() >= 0.5)
+
+    // randomly sort an array: the Fisher Yates method
+    // https://www.w3schools.com/JS/tryit.asp?filename=tryjs_array_sort_random2
+    var rand_indexes = [0,1,2];
+    var i, j, k;
+    for (i = rand_indexes.length -1; i > 0; i--) {
+        // i = 2
+        j = Math.floor(Math.random() * (i+1))
+        k = rand_indexes[i]
+        rand_indexes[i] = rand_indexes[j]
+        rand_indexes[j] = k 
+    }
+    // document.getElementById("debug_rand").innerHTML = rand_indexes;
+
+    for (i = 0; i < Obj1.image.length; i++) {
+        rand_flag = (Math.random() >= 0.5)
+        L_Obj = rand_flag ? Obj1 : Obj2
+        R_Obj = rand_flag ? Obj2 : Obj1
+
+        r_idx = rand_indexes[i]
+        text += "<div class=\"row\">" + "<div class=\"column\">";
+        text += "<img id=\"img1\" src=\""+L_Obj.prefix+L_Obj.image[r_idx]+"\" width=\"512\" height=\"768\">" + "<br>";
+        text += "<input id=\"radio1\" type=\"radio\" name=\"" + L_Obj.radio[r_idx] +"\" value=\"" + L_Obj.option + "\" required>";
+        text += "<label class=\"container\"> Left </div>";
+        text += "<div class=\"column\">";
+        text += "<img id=\"img2\" src=\""+R_Obj.prefix+R_Obj.image[r_idx]+"\" width=\"512\" height=\"768\">" + "<br>";
+        text += "<input id=\"radio2\" type=\"radio\" name=\"" + R_Obj.radio[r_idx] +"\" value=\"" + R_Obj.option + "\" required>";
+        text += "<label class=\"container\"> Right </div></div><hr>";
+    }
+    document.getElementById("image_pair_blk").innerHTML = text;
+</script>
+
+</body>
+</html>
